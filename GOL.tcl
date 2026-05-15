@@ -1,6 +1,6 @@
 package require Tk
 
-wm title . "CGOL"
+wm title . "CGOL" ;#Setting up the UI
 wm resizable . 0 0
 
 canvas .c -width 375 -height 375 -bg "#000000"
@@ -11,7 +11,7 @@ button .btns.step -text "Step" -command frame
 pack .btns.play .btns.pause .btns.step -side left -padx 5
 pack .c .btns -pady 5
 
-array set grid {}
+array set grid {} ;#Hardcoded grid, the values can be changed for a larger grid, canvas res might mess up though
 for {set r 0} {$r < 25} {incr r} {
     for {set c 0} {$c < 25} {incr c} {
         set grid($r,$c) 0
@@ -29,6 +29,7 @@ set grid(13,1) 1; set grid(13,2) 1; set grid(13,3) 1; set grid(13,4) 1
 
 set end ""
 
+#Drawing the grid
 proc draw {} {
     global grid
     .c delete all
@@ -43,6 +44,7 @@ proc draw {} {
     }
 }
 
+#CGOL logic and drawing the cell
 proc frame {} {
     global grid
     array set new_grid {}
@@ -59,7 +61,7 @@ proc frame {} {
                     }
                 }
             }
-            if {$grid($r,$c) == 1} {
+            if {$grid($r,$c) == 1} { ;#CGOL Rule checks (<2 or >3 cell dies, 3 alive neighbors around dead cell makes it alive)
                 set new_grid($r,$c) [expr {$n == 2 || $n == 3}]
             } else {
                 set new_grid($r,$c) [expr {$n == 3}]
@@ -73,7 +75,7 @@ proc frame {} {
 proc play {} {
     global end
     frame
-    set end [after 150 play]
+    set end [after 150 play] ;#The number here is the time before which the frame changes, 150 is roguhly 6.6 fps
 }
 
 proc pause {} {
